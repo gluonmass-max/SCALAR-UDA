@@ -1,12 +1,21 @@
 """R2.5 follow-up: the edge-sharpness estimate of scripts/edge_sharpness.py (s0 = 1 px, 60 random tiles per scene,
-seed 0) applied to the GDCLD external scenes, calibrated with the CAS UAV value sigma_native = 0.634 px.
+seed 0) applied to the GDCLD external scenes, calibrated with a user-supplied CAS UAV reference measurement.
+Usage: python scripts/edge_sharpness_gdcld.py --reference-sigma <positive value in pixels>
 Writes runs/edge_sharpness_gdcld_20261022.txt."""
-import csv, random, os, sys
+import argparse, csv, math, random, os, sys
+
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--reference-sigma", type=float, required=True,
+                    help="Median UAV sigma_px from your own scripts/edge_sharpness.py run")
+args = parser.parse_args()
+if not math.isfinite(args.reference_sigma) or args.reference_sigma <= 0:
+    parser.error("--reference-sigma must be finite and positive")
+
 import numpy as np, cv2
 sys.path.insert(0, os.getcwd())
 from cas.train import read_img
 cv2.setNumThreads(4)
-S0, NAT = 1.0, 0.634
+S0, NAT = 1.0, args.reference_sigma
 by = {}
 for r in csv.DictReader(open("splits/index_gdcld.csv")):
     if r["platform"] == "EXT":

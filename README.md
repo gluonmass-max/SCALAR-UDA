@@ -8,20 +8,9 @@ SCALAR adapts a landslide segmentation network from a labelled source platform t
 |---|---|---|
 | **GSA** – GSD Anchoring | Every source and target tile is resampled by `clip(gsd_tile / g*, 1/4, 2)` before the network, in training, adaptation and inference. The anchor `g*` is the source GSD closest to the target median GSD: 1.0 m for UAV→SAT, 0.5 m for SAT→UAV. Predictions are restored to the native grid before thresholding. | `--gsd_target g* --gsd_clamp 0.25,2.0` |
 | **LOC** – Logit-Otsu Calibration | Inside an EMA-teacher / ClassMix self-training loop, the pseudo-label boundary is the Otsu split of the teacher's target *logit* histogram, re-estimated at every epoch on a fixed pool of 256 unlabelled target tiles. Pixels are retained when their logit lies at least δ = 1 from that boundary (symmetric margins) instead of passing an absolute confidence gate. If no valid two-group split exists, the target pseudo-label loss is skipped for that epoch. | `--pl_mode otsu --pl_gate margin --pl_margin 1.0 --prior_pool 256` |
-| **RSR** – Ratio-Signed Regularization (optional) | Makes the two margins asymmetric according to the sign of log r, r = target median GSD / g*: (δ⁺, δ⁻) = (1.5, 0.5) for r > 1 and (0.5, 1.5) for r < 1. Reported in the paper as an exploratory extension; its increments are not statistically significant. | `--pl_margin_pos 1.5 --pl_margin_neg 0.5` (r > 1) or `0.5 / 1.5` (r < 1) |
+| **RSR** – Ratio-Signed Regularization (optional) | Makes the two margins asymmetric according to the sign of log r, r = target median GSD / g*: (δ⁺, δ⁻) = (1.5, 0.5) for r > 1 and (0.5, 1.5) for r < 1. | `--pl_margin_pos 1.5 --pl_margin_neg 0.5` (r > 1) or `0.5 / 1.5` (r < 1) |
 
 Checkpoints are selected on the **source** validation split. In the unsupervised adaptation runs no target label enters the adaptation loss, the threshold estimation or the checkpoint selection; target labels are used only to compute the reported metrics. Method design was developed with labelled feedback on the CAS benchmark, as stated in the paper.
-
-## Results (CAS Landslide, SegFormer-B2, landslide IoU at threshold 0.5, five seeds, mean ± sample SD)
-
-| Configuration | UAV → SAT | SAT → UAV |
-|---|---|---|
-| Source only (native scale) | 0.235 ± 0.014 | 0.289 ± 0.018 |
-| Source + GSA | 0.328 ± 0.011 | 0.348 ± 0.008 |
-| GSA + LOC | 0.364 ± 0.006 | 0.511 ± 0.017 |
-| GSA + LOC + RSR | 0.374 ± 0.008 | 0.527 ± 0.026 |
-
-Region hold-out (Longxi, Moxi and Wenchuan removed from source and adaptation pool, evaluation on the held-out Longxi and Moxi target tiles): GSA + LOC gains 17.9 ± 4.5 IoU points over Source + GSA in SAT→UAV (positive on every seed) and 0.2 ± 6.2 points in UAV→SAT. See the paper for comparators, backbones, external checks (GDCLD, Bijie) and statistics.
 
 ## Repository layout
 
@@ -44,7 +33,7 @@ scripts/
   make_gdcld_splits.py  GDCLD scene tiling and the two external splits
   run_e1.py               re-runs a logged argument set with overrides (used for the hold-out experiments)
   bootstrap.py, bootstrap_merge_regions.py, equal_weight*.py, e1_stats.py, e1b_stats.py, e3_table.py,
-  e7_logs.py, bijie_stats.py, bijie_ind_half.py   statistics and tables of the paper
+  e7_logs.py, bijie_stats.py, bijie_ind_half.py   statistics computed from user-supplied runs
   edge_sharpness*.py      relative edge-blur diagnostic (Table A1)
   zenodo_dl.py            resumable multi-connection Zenodo downloader
 splits/                   tile index and every split used in the paper (see below)
@@ -121,6 +110,8 @@ python -m cas.e3_infer --ckpt runs/C_sat2uav_M1_g0.5_s0/best.pt --split splits/C
 python scripts/e3_table.py          # summary table; scripts/bootstrap*.py, equal_weight*.py, bijie_stats.py for the statistics
 ```
 
+**Statistical utilities.** No precomputed scores or calibration outputs are bundled. `scripts/e1_stats.py --input <path.json>` accepts a JSON object keyed by transfer direction (for example, `sat2uav`), with per-seed arrays named `gsa_pool`, `sc_pool`, `gsa_hold`, `sc_hold`, `gsa_L`, `sc_L`, `gsa_M` and `sc_M`. `scripts/e1b_stats.py --input <path.json>` accepts the arrays `gsa_p`, `sc_p`, `gsa_h` and `sc_h`. Arrays must use the same seed order within each comparison. Store local measurements under `runs/`, which is ignored by Git. For the GDCLD edge diagnostic, pass your own CAS UAV reference measurement with `python scripts/edge_sharpness_gdcld.py --reference-sigma <value>`; it is the median UAV `sigma_px` from `scripts/edge_sharpness.py`.
+
 ## Hyper-parameters of the paper
 
 | Item | Value |
@@ -135,10 +126,10 @@ python scripts/e3_table.py          # summary table; scripts/bootstrap*.py, equa
 
 ## Notes on this release
 
-- No model weights are distributed; every result in the paper can be regenerated from the commands above on the public datasets.
+- No model weights or precomputed experimental results are distributed. Training and evaluation commands are provided for use with the public datasets.
 - `cas/train.py` and `cas/train_uda.py` keep a number of development-stage options (Fourier amplitude mixing, amplitude normalisation, cross-scale consistency, per-tile and soft gates, …) that are **not** part of any reported configuration. Their defaults are off.
 - Figure-generation code is not included.
-- This archive is the code snapshot of 2026-10-21 that produced the main, ablation, comparator, region-hold-out, GDCLD and operating-point results. Three small additions made for the Bijie runs of 2026-10-22/23 are not yet in it and will be added in the next revision of the archive: the `--tgt_pad_ignore` option of `cas/train_uda.py` (excludes reflection-padded target pixels from the pseudo-label supervision; the Bijie runs used `--tgt_pad_ignore 1`), the edge-padding of inputs to multiples of 32 in `cas/e3_infer.py` (needed for the variable-size Bijie crops), and the script that built `splits/index_bijie.csv` from the downloaded Bijie crops. The inference-timing benchmark script (`bench_infer.py`) is likewise pending.
+- This release is based on the code snapshot of 2026-10-21. Three small additions made for the Bijie runs of 2026-10-22/23 are not yet in it and will be added in the next revision of the archive: the `--tgt_pad_ignore` option of `cas/train_uda.py` (excludes reflection-padded target pixels from the pseudo-label supervision; the Bijie runs used `--tgt_pad_ignore 1`), the edge-padding of inputs to multiples of 32 in `cas/e3_infer.py` (needed for the variable-size Bijie crops), and the script that built `splits/index_bijie.csv` from the downloaded Bijie crops. The inference-timing benchmark script (`bench_infer.py`) is likewise pending.
 
 ## Citation
 

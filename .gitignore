@@ -5,3 +5,4 @@ data/
 .venv/
 *.pt
 *.pth
+/splits/effgsd_calib.json
