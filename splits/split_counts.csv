@@ -1,0 +1,16 @@
+split,train,val,test,val_share_of_source_pool,note
+A_712,14604,2088,4173,0.1251,"per-subset random 7:1:2, mixed UAV+SAT (main)"
+A_random73,14604,6261,6261,val=test,"per-subset random 7:3, val==test (paper convention)"
+A_sat_712,5194,744,1484,0.1253,"per-subset random 7:1:2, SAT only (separate model)"
+A_uav_712,9410,1344,2689,0.1250,"per-subset random 7:1:2, UAV only (separate model)"
+B_loro_Hokkaido,17443,1938,1484,0.1000,test region=Hokkaido
+B_loro_Jiuzhai,11869,1319,7677,0.1000,test region=Jiuzhai
+B_loro_Lombok,18387,2042,436,0.1000,test region=Lombok
+B_loro_Longxi,14933,1659,4273,0.1000,test region=Longxi
+B_loro_Mengdong,17740,1970,1155,0.0999,test region=Mengdong
+B_loro_Moxi,15256,1695,3914,0.1000,test region=Moxi
+B_loro_Palu,18044,2004,817,0.1000,test region=Palu
+B_loro_Tiburon,17941,1993,931,0.1000,test region=Tiburon
+B_loro_Wenchuan,18619,2068,178,0.1000,test region=Wenchuan
+C_sat2uav,6679,743,13443,0.1001,train SAT -> test UAV
+C_uav2sat,12100,1343,7422,0.0999,train UAV -> test SAT

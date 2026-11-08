@@ -1,0 +1,86 @@
+{
+ "a": 0.17829642637603535,
+ "b": 0.5971323182704269,
+ "per_subset": {
+  "Hokkaido": {
+   "nominal": 3.0,
+   "median_slope": -1.9866263960835724,
+   "effective": 1.2749716350004174
+  },
+  "Jiuzhai_UAV_0.2": {
+   "nominal": 0.2,
+   "median_slope": -3.106979591785058,
+   "effective": 1.0441142937411718
+  },
+  "Jiuzhai_UAV_0.5": {
+   "nominal": 0.5,
+   "median_slope": -2.5087463228526667,
+   "effective": 1.1616388551631691
+  },
+  "Lombok": {
+   "nominal": 5.0,
+   "median_slope": -2.1735698816013027,
+   "effective": 1.2331755321642706
+  },
+  "Longxi_SAT": {
+   "nominal": 0.5,
+   "median_slope": -3.8061186808938956,
+   "effective": 0.9217464982524625
+  },
+  "Longxi_UAV": {
+   "nominal": 0.5,
+   "median_slope": -2.2943292846080716,
+   "effective": 1.2069078656985266
+  },
+  "Mengdong": {
+   "nominal": 0.5,
+   "median_slope": -3.1593666869222736,
+   "effective": 1.0344072200391161
+  },
+  "Moxitaidi_SAT": {
+   "nominal": 0.6,
+   "median_slope": -2.527582120660778,
+   "effective": 1.1577442024724753
+  },
+  "Moxitaidi_UAV_0.6": {
+   "nominal": 0.6,
+   "median_slope": -2.870347002536405,
+   "effective": 1.0891087543947149
+  },
+  "Moxitaidi_UAV_1": {
+   "nominal": 1.0,
+   "median_slope": -2.4887872715594903,
+   "effective": 1.1657800592919882
+  },
+  "Moxitown_UAV_0.2": {
+   "nominal": 0.2,
+   "median_slope": -1.9767734859655772,
+   "effective": 1.2772133954835425
+  },
+  "Moxitown_UAV_1": {
+   "nominal": 1.0,
+   "median_slope": -1.9546664987851459,
+   "effective": 1.2822575902921562
+  },
+  "Palu": {
+   "nominal": 5.0,
+   "median_slope": -2.0188883170522196,
+   "effective": 1.2676588145223835
+  },
+  "Tiburon_Planet": {
+   "nominal": 4.0,
+   "median_slope": -3.710994149030612,
+   "effective": 0.9375129791524658
+  },
+  "Tiburon_Sentinel": {
+   "nominal": 5.0,
+   "median_slope": -2.3983023713323366,
+   "effective": 1.1847402782504906
+  },
+  "Wenchuan": {
+   "nominal": 5.0,
+   "median_slope": -3.559849746160408,
+   "effective": 0.9631210540870255
+  }
+ }
+}

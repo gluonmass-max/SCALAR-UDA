@@ -1,0 +1,72 @@
+{
+ "Lushan_1": {
+  "gsd_m": 0.5,
+  "shape": [
+   13365,
+   14745
+  ],
+  "tiles_total": 195,
+  "tiles_kept": 133,
+  "ls_frac_kept": 0.005934822828249824
+ },
+ "Lushan_2": {
+  "gsd_m": 0.5,
+  "shape": [
+   13621,
+   12375
+  ],
+  "tiles_total": 168,
+  "tiles_kept": 168,
+  "ls_frac_kept": 0.016116454487755186
+ },
+ "Lushan_3": {
+  "gsd_m": 3.0,
+  "shape": [
+   9420,
+   10274
+  ],
+  "tiles_total": 90,
+  "tiles_kept": 90,
+  "ls_frac_kept": 0.008062076568603516
+ },
+ "Mesetas": {
+  "gsd_m": 3.0,
+  "shape": [
+   12250,
+   11874
+  ],
+  "tiles_total": 144,
+  "tiles_kept": 144,
+  "ls_frac_kept": 0.006367749638027615
+ },
+ "Palu_1": {
+  "gsd_m": 1.194,
+  "shape": [
+   19732,
+   9320
+  ],
+  "tiles_total": 180,
+  "tiles_kept": 180,
+  "ls_frac_kept": 0.011420048607720269
+ },
+ "Palu_2": {
+  "gsd_m": 1.194,
+  "shape": [
+   15050,
+   8386
+  ],
+  "tiles_total": 120,
+  "tiles_kept": 120,
+  "ls_frac_kept": 0.008012811342875162
+ },
+ "Sumarta": {
+  "gsd_m": 3.0,
+  "shape": [
+   9640,
+   10759
+  ],
+  "tiles_total": 110,
+  "tiles_kept": 107,
+  "ls_frac_kept": 0.010608156150746569
+ }
+}
