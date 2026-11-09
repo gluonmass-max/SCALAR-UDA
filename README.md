@@ -43,7 +43,7 @@ requirements.txt          core dependencies
 
 ## Installation
 
-Tested with Python 3.12.3 (RTX 5090) and Python 3.11.16 (RTX 4090), PyTorch 2.8.0 + CUDA 12.8, cuDNN 9.10, bfloat16 autocast.
+Tested with Python 3.12.3 (RTX 5090)  PyTorch 2.8.0 + CUDA 12.8, cuDNN 9.10, bfloat16 autocast.
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
